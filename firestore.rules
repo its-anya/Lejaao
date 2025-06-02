@@ -1,0 +1,50 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Check if user is accessing their own data
+    function isUser(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Check if user is an admin
+    function isAdmin() {
+      return isAuthenticated() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+    
+    // Users collection
+    match /users/{userId} {
+      // Users can read and write their own data, admins can read all user data
+      allow read: if isUser(userId) || isAdmin();
+      allow write: if isUser(userId);
+    }
+    
+    // Products collection
+    match /products/{productId} {
+      // Anyone can read products, only admins can write
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    // Orders collection
+    match /orders/{orderId} {
+      // Users can read their own orders and create new orders
+      // Admins can read and write all orders
+      allow read: if isAdmin() || (isAuthenticated() && resource.data.userId == request.auth.uid);
+      allow create: if isAuthenticated();
+      allow update, delete: if isAdmin();
+    }
+    
+    // Admins collection
+    match /admins/{adminId} {
+      // Only admins can read the admins collection
+      allow read: if isAdmin();
+      // No one can write to admins collection through client
+      allow write: if false;
+    }
+  }
+} 

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "105711281116",
+    "project_id": "lejaao",
+    "storage_bucket": "lejaao.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105711281116:android:e800a1526b2b156771a519",
+        "android_client_info": {
+          "package_name": "com.rr.lejaao.lejaao"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDge2Uq-PRI2HvBvx3jC817fo5pti2_x7g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
